@@ -1,0 +1,25 @@
+# Ezt én írtam
+
+index:
+    path:     /
+    defaults: { _controller: AppBundle:Default:index }
+
+list:
+    path:     /admin
+    defaults: { _controller: AppBundle:Default:list }
+
+user_login:
+    path:     /login
+    defaults: { _controller: AppBundle:Login:index }
+
+user_registration:
+    path:     /register
+    defaults: { _controller: AppBundle:Registration:register }
+
+admin:
+    path:     /admin
+    defaults: { _controller: AppBundle:Default:admin }
+
+logout:
+    path:     /logout
+    defaults: { _controller: AppBundle:Login:logout }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="symfony">
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Tartozáskezelő{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('https://market.enonic.com/vendors/selbekk/io.selbekk.favicon/_/attachment/inline/51f8d6ef-c7db-47bd-aa5d-8a6e3da1d67e:2df7625fb6fd508cb0874730d8f812d52670aff1/favicon_cleaned.svg') }}" />
+        {% block javascripts %}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        {% endblock %}
+    </head>
+    <body>
+
+        <div class="container">
+
+            <div class="page-header">
+                <h1>{% block page_title %}Tartozáskezelő{% endblock %}</h1>
+                <p class="lead">{% block page_lead %}{% endblock %}</p>
+            </div>
+
+            {% block body %}{% endblock %}
+
+        </div> <!-- /container -->
+    </body>
+</html>

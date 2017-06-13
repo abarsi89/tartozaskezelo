@@ -1,0 +1,43 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    # Én írtam ezt
+    encoders:
+            AppBundle\Entity\User:
+                algorithm: plaintext
+
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        # Én írtam ezt
+        our_db_provider:
+                    entity:
+                        class: AppBundle:User
+                        property: username
+                        # if you're using multiple entity managers
+                        # manager_name: customer
+
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+
+            # Ezt én írtam
+            pattern:    ^/
+            #http_basic: ~
+            provider: our_db_provider
+
+
+            anonymous: ~
+            form_login:
+                login_path: user_login
+                check_path: user_login
+
+    # Ezt én írtam
+    access_control:
+      - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }
+      - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

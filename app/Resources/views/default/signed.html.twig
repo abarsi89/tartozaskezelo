@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Tartozáskezelő{% endblock %}
+
+{% block body %}
+    <a href="{{ path('logout') }}"><button class="btn btn-danger">Kijelentkezés</button></a>
+    <?php
+
+    ?>
+
+    <h3>Üdv,
+        <?php
+        $sql = 'SELECT * FROM debt';
+        $name =
+        echo "getUsername()";
+        ?>
+    </h3>
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Adós</th>
+                <th>Hitelező</th>
+                <th>Összeg</th>
+                <th>Mióta</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for debt in debts %}
+            <tr>
+                <td>{{ debt.id }}</td>
+                <td>{{ debt.debtor }}</td>
+                <td>{{ debt.creditor }}</td>
+                <td>{{ debt.amount }}</td>
+                <td>{{ debt.created | date('Y-m-d') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
