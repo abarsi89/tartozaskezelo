@@ -37,6 +37,19 @@ security:
                 login_path: user_login
                 check_path: user_login
 
+            logout:
+                csrf_token_id:        logout
+                path:                 /logout
+                target:               /
+                success_handler:      ~
+                invalidate_session:   true
+                delete_cookies:
+                    name:
+                        path:                 null
+                        domain:               null
+                handlers:             []
+
+
     # Ezt én írtam
     access_control:
       - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }

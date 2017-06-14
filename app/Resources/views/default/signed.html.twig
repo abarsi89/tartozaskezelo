@@ -9,12 +9,9 @@
     ?>
 
     <h3>Üdv,
-        <?php
-        $sql = 'SELECT * FROM debt';
-        $name =
-        echo "getUsername()";
-        ?>
+        {{ app.user.username }}
     </h3>
+    <h4>Összes tartozásod: {{ udebt }}</h4>
     <br>
 
     <table class="table">
