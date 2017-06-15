@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Tartozáskezelő - Admin{% endblock %}
+
+{% block body %}
+    <a href="{{ path('logout') }}"><button class="btn btn-primary">Kijelentkezés</button></a>
+    <?php
+
+    ?>
+
+    <h3>Üdv, <b>{{ app.user.username }}</b>(admin)!</h3>
+    <h4>Összes tartozás a rendszerben: <b>{{ adebt }} fabatka</b></h4>
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Adós</th>
+                <th>Hitelező</th>
+                <th>Összeg</th>
+                <th>Mióta</th>
+                <th>Lehetőségek</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for debt in debts %}
+            <tr>
+                <td>{{ debt.id }}</td>
+                <td>{{ debt.debtor }}</td>
+                <td>{{ debt.creditor }}</td>
+                <td>{{ debt.amount }}</td>
+                <td>{{ debt.created | date('Y-m-d') }}</td>
+                <td>
+                    <div class="btn btn-group">
+                        <button class="btn btn-success">Teljesítve</button>
+                        <button class="btn btn-danger">Törlés</button>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <button class="btn btn-default">Új tartozás/követelés</button>
+{% endblock %}

@@ -38,6 +38,15 @@ class User implements UserInterface, \Serializable
      */
     private $isActive;
 
+
+    private $role;
+
+    public function addRole($role)
+    {
+        $this->role = $role;
+    }
+
+
     public function __construct()
     {
         $this->isActive = true;

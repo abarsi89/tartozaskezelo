@@ -4,9 +4,9 @@ index:
     path:     /
     defaults: { _controller: AppBundle:Default:index }
 
-list:
-    path:     /admin
-    defaults: { _controller: AppBundle:Default:list }
+#list:
+#    path:     /admin
+#    defaults: { _controller: AppBundle:Default:list }
 
 user_login:
     path:     /login

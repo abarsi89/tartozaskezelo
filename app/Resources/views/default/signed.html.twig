@@ -3,38 +3,67 @@
 {% block page_title %}Tartozáskezelő{% endblock %}
 
 {% block body %}
-    <a href="{{ path('logout') }}"><button class="btn btn-danger">Kijelentkezés</button></a>
+    <a href="{{ path('logout') }}"><button class="btn btn-primary">Kijelentkezés</button></a>
     <?php
 
     ?>
 
-    <h3>Üdv,
-        {{ app.user.username }}
-    </h3>
-    <h4>Összes tartozásod: {{ udebt }}</h4>
+    <h3>Üdv, <b>{{ app.user.username }}</b>!</h3>
+    <h4>Egyenleg: <b>{{ balance }} fabatka</b></h4>
     <br>
+    <div class="row">
+        <div class="col-xs-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Kinek tartozom</th>
+                    <th>Mennyivel</th>
+                    <th>Mióta</th>
+                    <th>Lehetőség(ek)</th>
+                </tr>
+            </thead>
+            <tbody>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Adós</th>
-                <th>Hitelező</th>
-                <th>Összeg</th>
-                <th>Mióta</th>
-            </tr>
-        </thead>
-        <tbody>
+            {% for s in sql1 %}
+                <tr>
+                    <td>{{ s.creditor }}</td>
+                    <td>{{ -s.amount }}</td>
+                    <td>{{ s.created | date('Y-m-d') }}</td>
+                    <td>
+                        <button class="btn btn-success">Teljesítve</button>
+                    </td>
+                </tr>
+            {% endfor %}
 
-        {% for debt in debts %}
-            <tr>
-                <td>{{ debt.id }}</td>
-                <td>{{ debt.debtor }}</td>
-                <td>{{ debt.creditor }}</td>
-                <td>{{ debt.amount }}</td>
-                <td>{{ debt.created | date('Y-m-d') }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xs-6">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Kinek adtam</th>
+                    <th>Mennyit</th>
+                    <th>Mióta</th>
+                    <th>Lehetőség(ek)</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for q in sql2 %}
+                <tr>
+                    <td>{{ q.debtor }}</td>
+                    <td>{{ q.amount }}</td>
+                    <td>{{ q.created | date('Y-m-d') }}</td>
+                    <td>
+                        <button class="btn btn-success">Teljesítve</button>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    </div>
 {% endblock %}
