@@ -2,11 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Debt;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\Form;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class DefaultController extends Controller
 {
@@ -116,9 +121,42 @@ class DefaultController extends Controller
         }
     }
 
-    /*public function listAction(Request $request)
+    public function newDebtAction(Request $request)
     {
+        $rec = new Debt();
+        /*
+        $rec->setDebtor('grizli');
+        $rec->setCreditor('panda');
+        $rec->setAmount(28);
+        */
+
+        $form = $this->createFormBuilder($rec)
+            ->add('debtor', TextType::class, array('label' => 'Adós'))
+            ->add('creditor', TextType::class, array('label' => 'Hitelező'))
+            ->add('amount', NumberType::class, array('label' => 'Összeg'))
+            ->add('save', SubmitType::class, array('label' => 'Mentés'))
+            ->getForm();
+
+        return $this->render('default/new.html.twig', array(
+            'form' => $form->createView(),
+        ));
 
 
-    }*/
+        $em = $this->getDoctrine()->getManager();
+
+        $qu = $em->createQueryBuilder();
+
+        $qu ->insert('debt')
+            ->setValue('debtor', '?')
+            ->setValue('creditor', '?')
+            ->setValue('amount', '?')
+            ->setParameter(0, $debtor)
+            ->setParameter(1, $creditor)
+            ->setParameter(2, $amount);
+
+        $qu->getQuery()->execute();
+
+        adminAction();
+
+    }
 }

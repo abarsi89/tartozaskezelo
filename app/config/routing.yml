@@ -23,3 +23,7 @@ admin:
 logout:
     path:     /logout
     defaults: { _controller: AppBundle:Login:logout }
+
+new_debt:
+    path:     /new
+    defaults: { _controller: AppBundle:Default:newDebt }

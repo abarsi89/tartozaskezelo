@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}Tartozáskezelő - Admin{% endblock %}
+
+{% block body %}
+<form class="form-horizontal" action="{{ path('new_debt') }}" method="post">
+    {% if form is defined %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    {% endif %}
+</form>
+{% endblock %}
