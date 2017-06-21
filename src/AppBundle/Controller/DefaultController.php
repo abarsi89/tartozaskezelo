@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 
 class DefaultController extends Controller
 {
@@ -47,7 +48,7 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function adminAction()
+    public function adminAction(Request $request)
     {
         $authenticationUtils = $this->get('security.authentication_utils');
         // last username entered by the user
@@ -56,6 +57,10 @@ class DefaultController extends Controller
 
         $user = $this->getUser();
         $actualUsername = $user->getUsername();
+
+        // Teljesítések ellenőrzése és gombok megváltoztatása
+
+        //
 
         if($actualUsername === "jeges")
         {
@@ -68,7 +73,6 @@ class DefaultController extends Controller
             $adebt = $qu->getQuery()
                 ->getSingleScalarResult();
             //->getOneOrNullResult();
-
 
             $debts = $em->getRepository('AppBundle:Debt')->findAll();
 
@@ -99,7 +103,7 @@ class DefaultController extends Controller
 
             // Kigyűjtöm azokat a rekordokat ahol a felhasználó neve megegyezik az adósokkal
             $s1 = $em->createQueryBuilder();
-            $s1 ->select('u.id, u.creditor, u.amount, u.created')
+            $s1 ->select('u.id, u.creditor, u.amount, u.created, u.paid, u.comp_name')
                  ->from('AppBundle:Debt', 'u')
                 ->where('u.debtor = :actualUsername')
                 ->setParameter('actualUsername', $actualUsername);
@@ -109,7 +113,7 @@ class DefaultController extends Controller
 
             // Kigyűjtöm azokat a rekordokat ahol a felhasználó neve megegyezik a hitelezőkkel
             $s2 = $em->createQueryBuilder();
-            $s2 ->select('u.id, u.debtor, u.amount, u.created')
+            $s2 ->select('u.id, u.debtor, u.amount, u.created, u.paid, u.comp_name')
                 ->from('AppBundle:Debt', 'u')
                 ->where('u.creditor = :actualUsername')
                 ->setParameter('actualUsername', $actualUsername);
@@ -119,6 +123,8 @@ class DefaultController extends Controller
 
             return $this->render('default/signed.html.twig', ['balance' => $balance, 'sql1' => $sql1, 'sql2' => $sql2]);
         }
+
+
     }
 
     public function newDebtAction(Request $request)
@@ -197,14 +203,16 @@ class DefaultController extends Controller
         $user = $this->getUser();
         $actualUsername = $user->getUsername();
 
+        /** @var Debt $datas */
         $datas = $this->getDoctrine()
             ->getRepository('AppBundle:Debt')
             ->findOneById($request->get('id'));
 
         $paid = $datas->getPaid();
         $comp_name = $datas->getComp_name();
+        $creditor = $datas->getCreditor();
 
-        if($actualUsername === "jeges")
+        if($actualUsername === "jeges" || $actualUsername == $creditor)
         {
             // Teljesítés admin által
             /** @var Debt $record */
@@ -221,7 +229,7 @@ class DefaultController extends Controller
             return $this->redirectToRoute('admin');
 
         } else {
-            if('paid' == 0) {
+            if($paid == 0) {
                 // Egyik oldal teljesítettnek jelöli a tartozást
                 /** @var Debt $record */
                 $record = $this->getDoctrine()
@@ -246,7 +254,7 @@ class DefaultController extends Controller
 
                 return $this->redirectToRoute('admin');
 
-            } elseif ('paid' == 1 && 'comp_name' != $actualUsername){
+            } elseif ($paid == 1 && $comp_name != $actualUsername){
                 // Másik oldal is teljesítettnek jelöli a tartozást
                 /** @var Debt $record */
                 $record = $this->getDoctrine()
@@ -258,6 +266,11 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($record);
                 $em->flush();
+
+                return $this->redirectToRoute('admin');
+
+            } elseif ($paid == 2) {
+                return $this->redirectToRoute('admin');
             }
         }
     }

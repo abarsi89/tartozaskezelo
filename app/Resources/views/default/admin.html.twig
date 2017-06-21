@@ -4,9 +4,6 @@
 
 {% block body %}
     <a href="{{ path('logout') }}"><button class="btn btn-primary">Kijelentkezés</button></a>
-    <?php
-
-    ?>
 
     <h3>Üdv, <b>{{ app.user.username }}</b>(admin)!</h3>
     <h4>Összes tartozás a rendszerben: <b>{{ adebt }} fabatka</b></h4>
@@ -35,7 +32,15 @@
                 <td>
                     <div class="btn btn-group">
                         <a href="{{ path('completed', { 'id': debt.id }) }}">
-                            <button type="submit" class="btn btn-success">Teljesítve</button>
+                            {% if debt.paid == 0 %}
+                                <button type="submit" class="btn btn-default">Teljesítés</button>
+
+                            {% elseif debt.paid == 1 %}
+                                <button type="submit" class="btn btn-primary">Teljesítés</button>
+
+                            {% elseif debt.paid == 2 %}
+                                <button type="submit" class="btn btn-success" disabled>Teljesítve</button>
+                            {% endif %}
                         </a>
                         <a href="{{ path('delete_debt', { 'id': debt.id }) }}">
                             <button type="submit" class="btn btn-danger">Törlés</button>
@@ -51,59 +56,4 @@
     <button class="btn btn-default" data-toggle="modal" data-target="#newDebtModal">Új tartozás/követelés</button>
 </a>
 
-    <!-- Modal -->
-        <!--
-    <div class="modal fade" id="newDebtModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Új tartozás/követelés</h3>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form class="form-horizontal" action="{{ path('new_debt') }}" method="post">
-                    <div class="modal-body">
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="debtor">Adós:</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" name="debtor">
-                                    <option value="notset">Válassz...</option>
-                                    <option value="grizli">grizli</option>
-                                    <option value="jeges">jeges</option>
-                                    <option value="panda">panda</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="creditor">Hitelező:</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" name="creditor">
-                                    <option value="notset">Válassz...</option>
-                                    <option value="grizli">grizli</option>
-                                    <option value="jeges">jeges</option>
-                                    <option value="panda">panda</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="amount">Összeg:</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" type="number" name="amount">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
-                        <a href="{{ path('new_debt') }}">
-                            <button type="submit" class="btn btn-primary" data-dismiss="modal" >Mentés</button>
-                        </a>
-                    </div>
-
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
--->
 {% endblock %}

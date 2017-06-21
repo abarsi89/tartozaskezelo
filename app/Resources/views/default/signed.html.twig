@@ -31,7 +31,18 @@
                     <td>{{ s.created | date('Y-m-d') }}</td>
                     <td>
                         <a href="{{ path('completed', { 'id': s.id }) }}">
-                            <button type="submit" class="btn btn-success">Teljesítve</button>
+                            {% if s.paid == 0 %}
+                                <button type="submit" class="btn btn-default">Teljesítés</button>
+                            {% endif %}
+                            {% if s.paid == 1 and s.comp_name == 'app.user.name' %}
+                                <button type="submit" class="btn btn-primary" disabled>Teljesítve</button>
+                            {% endif %}
+                            {% if s.paid == 1 and s.comp_name != 'app.user.name' %}
+                                <button type="submit" class="btn btn-primary">Teljesítés</button>
+                            {% endif %}
+                            {% if s.paid == 2 %}
+                                <button type="submit" class="btn btn-success" disabled>Teljesítve</button>
+                            {% endif %}
                         </a>
                     </td>
                 </tr>
@@ -60,7 +71,18 @@
                     <td>{{ q.created | date('Y-m-d') }}</td>
                     <td>
                         <a href="{{ path('completed', { 'id': q.id }) }}">
-                            <button type="submit" class="btn btn-success">Teljesítve</button>
+                            {% if q.paid == 0 %}
+                                <button type="submit" class="btn btn-default">Teljesítés</button>
+                            {% endif %}
+                            {% if q.paid == 1 and q.comp_name == app.user.username %}
+                                <button type="submit" class="btn btn-primary" disabled>Teljesítve</button>
+                            {% endif %}
+                            {% if q.paid == 1 and q.comp_name != app.user.username %}
+                                <button type="submit" class="btn btn-primary">Teljesítés</button>
+                            {% endif %}
+                            {% if q.paid == 2 %}
+                                <button type="submit" class="btn btn-success" disabled>Teljesítve</button>
+                            {% endif %}
                         </a>
                     </td>
                 </tr>
