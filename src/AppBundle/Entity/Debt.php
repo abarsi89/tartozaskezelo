@@ -45,6 +45,16 @@ class Debt {
      */
     private $created;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $paid;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $comp_name;
+
     public function getId()
     {
         return $this->id;
@@ -68,6 +78,16 @@ class Debt {
     public function getCreated()
     {
         return $this->created;
+    }
+
+    public function getPaid()
+    {
+        return $this->paid;
+    }
+
+    public function getComp_name()
+    {
+        return $this->comp_name;
     }
 
     public function setId($id)
@@ -101,6 +121,20 @@ class Debt {
     public function setCreated($created)
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function setPaid($paid)
+    {
+        $this->paid = $paid;
+
+        return $this;
+    }
+
+    public function setComp_name($comp_name)
+    {
+        $this->comp_name = $comp_name;
 
         return $this;
     }

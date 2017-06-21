@@ -34,8 +34,12 @@
                 <td>{{ debt.created | date('Y-m-d') }}</td>
                 <td>
                     <div class="btn btn-group">
-                        <button class="btn btn-success">Teljesítve</button>
-                        <button class="btn btn-danger">Törlés</button>
+                        <a href="{{ path('completed', { 'id': debt.id }) }}">
+                            <button type="submit" class="btn btn-success">Teljesítve</button>
+                        </a>
+                        <a href="{{ path('delete_debt', { 'id': debt.id }) }}">
+                            <button type="submit" class="btn btn-danger">Törlés</button>
+                        </a>
                     </div>
                 </td>
             </tr>

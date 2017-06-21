@@ -30,7 +30,9 @@
                     <td>{{ -s.amount }}</td>
                     <td>{{ s.created | date('Y-m-d') }}</td>
                     <td>
-                        <button class="btn btn-success">Teljesítve</button>
+                        <a href="{{ path('completed', { 'id': s.id }) }}">
+                            <button type="submit" class="btn btn-success">Teljesítve</button>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}
@@ -57,7 +59,9 @@
                     <td>{{ q.amount }}</td>
                     <td>{{ q.created | date('Y-m-d') }}</td>
                     <td>
-                        <button class="btn btn-success">Teljesítve</button>
+                        <a href="{{ path('completed', { 'id': q.id }) }}">
+                            <button type="submit" class="btn btn-success">Teljesítve</button>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

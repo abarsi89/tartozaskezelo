@@ -4,10 +4,6 @@ index:
     path:     /
     defaults: { _controller: AppBundle:Default:index }
 
-#list:
-#    path:     /admin
-#    defaults: { _controller: AppBundle:Default:list }
-
 user_login:
     path:     /login
     defaults: { _controller: AppBundle:Login:index }
@@ -27,3 +23,11 @@ logout:
 new_debt:
     path:     /new
     defaults: { _controller: AppBundle:Default:newDebt }
+
+delete_debt:
+    path:     /delete
+    defaults: { _controller: AppBundle:Default:deleteDebt }
+
+completed:
+    path:     /completed
+    defaults: { _controller: AppBundle:Default:completed }
