@@ -103,7 +103,7 @@ class DefaultController extends Controller
 
             // Kigyűjtöm azokat a rekordokat ahol a felhasználó neve megegyezik az adósokkal
             $s1 = $em->createQueryBuilder();
-            $s1 ->select('u.id, u.creditor, u.amount, u.created, u.paid, u.comp_name')
+            $s1 ->select('u.id, u.creditor, u.amount, u.created, u.paid, u.comp_name, u.creator')
                  ->from('AppBundle:Debt', 'u')
                 ->where('u.debtor = :actualUsername')
                 ->setParameter('actualUsername', $actualUsername);
@@ -113,7 +113,7 @@ class DefaultController extends Controller
 
             // Kigyűjtöm azokat a rekordokat ahol a felhasználó neve megegyezik a hitelezőkkel
             $s2 = $em->createQueryBuilder();
-            $s2 ->select('u.id, u.debtor, u.amount, u.created, u.paid, u.comp_name')
+            $s2 ->select('u.id, u.debtor, u.amount, u.created, u.paid, u.comp_name, u.creator')
                 ->from('AppBundle:Debt', 'u')
                 ->where('u.creditor = :actualUsername')
                 ->setParameter('actualUsername', $actualUsername);
@@ -144,11 +144,22 @@ class DefaultController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Debt $data */
             $data = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($data);
+            $em->flush();
+
+            // Létrehozó nevének beszúrása az adatbázisba
+            $user = $this->getUser();
+            $actualUsername = $user->getUsername();
+
+            $record = $this->getDoctrine()
+                ->getRepository('AppBundle:Debt')
+                ->findOneById($request->get('id'));
+
+            $record->setCreator($actualUsername);
 
             $em = $this->getDoctrine()->getManager();
-
-            $em->persist($data);
-
+            $em->persist($record);
             $em->flush();
 
             /*$qu = $em->createQueryBuilder();

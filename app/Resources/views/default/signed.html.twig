@@ -13,83 +13,108 @@
     <br>
     <div class="row">
         <div class="col-xs-6">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Kinek tartozom</th>
-                    <th>Mennyivel</th>
-                    <th>Mióta</th>
-                    <th>Lehetőség(ek)</th>
-                </tr>
-            </thead>
-            <tbody>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Kinek tartozom</th>
+                        <th>Mennyivel</th>
+                        <th>Mióta</th>
+                        <th>Lehetőség(ek)</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            {% for s in sql1 %}
-                <tr>
-                    <td>{{ s.creditor }}</td>
-                    <td>{{ -s.amount }}</td>
-                    <td>{{ s.created | date('Y-m-d') }}</td>
-                    <td>
-                        <a href="{{ path('completed', { 'id': s.id }) }}">
-                            {% if s.paid == 0 %}
-                                <button type="submit" class="btn btn-default">Teljesítés</button>
+                {% for s in sql1 %}
+                    <tr>
+                        <td>{{ s.creditor }}</td>
+                        <td>{{ -s.amount }}</td>
+                        <td>{{ s.created | date('Y-m-d H:i') }}</td>
+                        <td>
+                            <a href="{{ path('completed', { 'id': s.id }) }}">
+                                {% if s.paid == 0 %}
+                                    <button type="submit" class="btn btn-default">Teljesítés</button>
+                                {% endif %}
+                                {% if s.paid == 1 and s.comp_name == 'app.user.name' %}
+                                    <button type="submit" class="btn btn-primary" disabled>Teljesítve</button>
+                                {% endif %}
+                                {% if s.paid == 1 and s.comp_name != 'app.user.name' %}
+                                    <button type="submit" class="btn btn-primary">Teljesítés</button>
+                                {% endif %}
+                                {% if s.paid == 2 %}
+                                    <button type="submit" class="btn btn-success" disabled>Teljesítve</button>
+                                {% endif %}
+                            </a>
+                            {% if s.creator == app.user.username %}
+                                {% if s.created|date_modify('+1 day') >= date() %}
+                                    <a href="{{ path('delete_debt', { 'id': s.id }) }}">
+                                        <button type="submit" class="btn btn-danger">Törlés</button>
+                                    </a>
+                                {% elseif s.created|date_modify('+1 day') < date() %}
+                                    <a href="{{ path('delete_debt', { 'id': s.id }) }}">
+                                        <button type="submit" class="btn btn-danger" disabled>Törlés</button>
+                                    </a>
+                                {% endif %}
                             {% endif %}
-                            {% if s.paid == 1 and s.comp_name == 'app.user.name' %}
-                                <button type="submit" class="btn btn-primary" disabled>Teljesítve</button>
-                            {% endif %}
-                            {% if s.paid == 1 and s.comp_name != 'app.user.name' %}
-                                <button type="submit" class="btn btn-primary">Teljesítés</button>
-                            {% endif %}
-                            {% if s.paid == 2 %}
-                                <button type="submit" class="btn btn-success" disabled>Teljesítve</button>
-                            {% endif %}
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-6">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Kinek adtam</th>
+                        <th>Mennyit</th>
+                        <th>Mióta</th>
+                        <th>Lehetőség(ek)</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                {% for q in sql2 %}
+                    <tr>
+                        <td>{{ q.debtor }}</td>
+                        <td>{{ q.amount }}</td>
+                        <td>{{ q.created | date('Y-m-d H:i') }}</td>
+                        <td>
+                            <a href="{{ path('completed', { 'id': q.id }) }}">
+                                {% if q.paid == 0 %}
+                                    <button type="submit" class="btn btn-default">Teljesítés</button>
+                                {% endif %}
+                                {% if q.paid == 1 and q.comp_name == app.user.username %}
+                                    <button type="submit" class="btn btn-primary" disabled>Teljesítve</button>
+                                {% endif %}
+                                {% if q.paid == 1 and q.comp_name != app.user.username %}
+                                    <button type="submit" class="btn btn-primary">Teljesítés</button>
+                                {% endif %}
+                                {% if q.paid == 2 %}
+                                    <button type="submit" class="btn btn-success" disabled>Teljesítve</button>
+                                {% endif %}
+                            </a>
+                            {% if q.creator == app.user.username %}
+                                {% if q.created|date_modify('+1 day') >= date() %}
+                                    <a href="{{ path('delete_debt', { 'id': q.id }) }}">
+                                        <button type="submit" class="btn btn-danger">Törlés</button>
+                                    </a>
+                                {% elseif q.created|date_modify('+1 day') < date() %}
+                                    <a href="{{ path('delete_debt', { 'id': q.id }) }}">
+                                        <button type="submit" class="btn btn-danger" disabled>Törlés</button>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="col-xs-6">
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Kinek adtam</th>
-                    <th>Mennyit</th>
-                    <th>Mióta</th>
-                    <th>Lehetőség(ek)</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            {% for q in sql2 %}
-                <tr>
-                    <td>{{ q.debtor }}</td>
-                    <td>{{ q.amount }}</td>
-                    <td>{{ q.created | date('Y-m-d') }}</td>
-                    <td>
-                        <a href="{{ path('completed', { 'id': q.id }) }}">
-                            {% if q.paid == 0 %}
-                                <button type="submit" class="btn btn-default">Teljesítés</button>
-                            {% endif %}
-                            {% if q.paid == 1 and q.comp_name == app.user.username %}
-                                <button type="submit" class="btn btn-primary" disabled>Teljesítve</button>
-                            {% endif %}
-                            {% if q.paid == 1 and q.comp_name != app.user.username %}
-                                <button type="submit" class="btn btn-primary">Teljesítés</button>
-                            {% endif %}
-                            {% if q.paid == 2 %}
-                                <button type="submit" class="btn btn-success" disabled>Teljesítve</button>
-                            {% endif %}
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-
-            </tbody>
-        </table>
-    </div>
-    </div>
+    <a href="{{ path('new_debt') }}">
+        <button class="btn btn-default">Új tartozás/követelés</button>
+    </a>
 {% endblock %}

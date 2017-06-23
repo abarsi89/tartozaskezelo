@@ -28,7 +28,7 @@
                 <td>{{ debt.debtor }}</td>
                 <td>{{ debt.creditor }}</td>
                 <td>{{ debt.amount }}</td>
-                <td>{{ debt.created | date('Y-m-d') }}</td>
+                <td>{{ debt.created | date('Y-m-d H:i') }}</td>
                 <td>
                     <div class="btn btn-group">
                         <a href="{{ path('completed', { 'id': debt.id }) }}">
@@ -51,9 +51,8 @@
         {% endfor %}
         </tbody>
     </table>
-    <br>
-<a href="{{ path('new_debt') }}">
-    <button class="btn btn-default" data-toggle="modal" data-target="#newDebtModal">Új tartozás/követelés</button>
-</a>
+    <a href="{{ path('new_debt') }}">
+        <button class="btn btn-default">Új tartozás/követelés</button>
+    </a>
 
 {% endblock %}

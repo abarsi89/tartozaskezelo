@@ -55,6 +55,11 @@ class Debt {
      */
     private $comp_name;
 
+    /**
+     * @ORM\Column(type="string", length=25)
+     */
+    private $creator;
+
     public function getId()
     {
         return $this->id;
@@ -88,6 +93,11 @@ class Debt {
     public function getComp_name()
     {
         return $this->comp_name;
+    }
+
+    public function getCreator()
+    {
+        return $this->creator;
     }
 
     public function setId($id)
@@ -135,6 +145,13 @@ class Debt {
     public function setComp_name($comp_name)
     {
         $this->comp_name = $comp_name;
+
+        return $this;
+    }
+
+    public function setCreator($creator)
+    {
+        $this->creator = $creator;
 
         return $this;
     }
